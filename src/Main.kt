@@ -12,9 +12,12 @@ class DeathPenalty: BukkitPlugin(){
 
     fun err(ex: Exception){ severe(ex); logToFile(ex) }
 
+    fun Player.has(perm: String) = hasPermission("deathpenalty.$perm")
+
     override fun onEnable() = catch(::err){
         init(Config)
         listen<PlayerDeathEvent> {
+            if(!it.entity.has("bypass"))
             it.entity.withdraw()
         }
         command("deathpenalty"){ args ->
