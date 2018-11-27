@@ -3,3 +3,8 @@ version: @version@
 main: fr.rhaz.minecraft.DeathPenalty
 author: Hazae41
 depend: [Kotlin4MC, Vault]
+
+commands:
+  deathpenalty:
+    permission: deathpenalty.use
+    usage: /deathpenalty [reload]
