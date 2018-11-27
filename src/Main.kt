@@ -15,6 +15,7 @@ class DeathPenalty: BukkitPlugin(){
     fun Player.has(perm: String) = hasPermission("deathpenalty.$perm")
 
     override fun onEnable() = catch(::err){
+        update(62767)
         init(Config)
         listen<PlayerDeathEvent> {
             if(!it.entity.has("bypass"))
