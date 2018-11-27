@@ -1,0 +1,70 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.10'
+}
+
+apply plugin: 'maven-publish'
+
+group 'fr.rhaz.minecraft'
+version '1.0'
+def pname = "DeathPenalty"
+def desc = "Withdraw bank account on death"
+
+repositories {
+    maven { url "https://mymavenrepo.com/repo/NIp3fBk55f5oF6VI1Wso/"}
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots"}
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"}
+    maven { url "http://nexus.hc.to/content/repositories/pub_releases" }
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "fr.rhaz.minecraft:kotlin4mc:2.1.1"
+    compileOnly "net.md-5:bungeecord-api:1.13-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT"
+    compileOnly "net.milkbowl.vault:VaultAPI:1.7"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+tasks.withType(Jar) {
+    destinationDir = file("$rootDir/jar")
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
+
+sourceSets {
+    main.kotlin{
+        srcDirs += 'src'
+    }
+    test.kotlin.srcDirs += 'test'
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+processResources {
+    with copySpec {
+        from 'resources'
+        filter(ReplaceTokens, tokens: ['id':rootProject.name, 'name':pname, 'version':version, 'desc':desc])
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+publishing {
+    repositories {
+        maven {
+            url System.getProperties().getProperty("mavenwrite")
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
