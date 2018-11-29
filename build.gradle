@@ -5,7 +5,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group 'fr.rhaz.minecraft'
-version '1.0'
+version '1.1'
 def pname = "DeathPenalty"
 def desc = "Withdraw bank account on death"
 

@@ -1,2 +1,4 @@
-amount: 100.0
+amount: 100
+# You can also use percentage
+# amount: 50%
 message: "&cYou've lost %amount% during your death"
